@@ -37,3 +37,9 @@ export const generateSimpleHash = (input) => {
 
 	return simpleHash(input);
 };
+
+export const convertSpaceToDash = (str) => {
+	if (typeof str !== 'string') return '';
+
+	return str.trim().toLowerCase().replace(/\s/g, '-');
+};

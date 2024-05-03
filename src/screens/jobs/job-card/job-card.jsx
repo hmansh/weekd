@@ -12,6 +12,7 @@ export const StyledCard = styled(Card)({
 export const StyledPrimaryButton = styled(Button)({
 	backgroundColor: Colors.primary600,
 	color: Colors.white,
+	borderRadius: 24,
 	'&:hover': {
 		backgroundColor: Colors.primary800,
 	},
@@ -19,6 +20,7 @@ export const StyledPrimaryButton = styled(Button)({
 
 export const StyledSecondaryButton = styled(Button)({
 	backgroundColor: Colors.secondary600,
+	borderRadius: 24,
 	color: Colors.white,
 	'&:hover': {
 		backgroundColor: Colors.secondary800,

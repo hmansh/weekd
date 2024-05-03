@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import JobCard from './job-card';
 import { fetchJobs } from '../../action';
-import { getJobs } from '../../selector/jobs';
+import { getFilteredJobs } from '../../selector/jobs';
 
 function JobsList(props) {
 	const [pageCount, setPageCount] = useState(0);
@@ -43,7 +43,7 @@ function JobsList(props) {
 }
 
 const mapStateToProps = (state, props) => ({
-	jobs: getJobs(state, props),
+	jobs: getFilteredJobs(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
