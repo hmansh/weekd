@@ -1,44 +1,60 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import {Grid} from "@mui/material";
-import JobCard from "./job-card";
-import {decrement, fetchJobs, increment} from "../../action";
+import { Grid } from '@mui/material';
+import JobCard from './job-card';
+import { decrement, fetchJobs, increment } from '../../action';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { getJobs } from '../../selector/jobs';
 
 const JobsList = (props) => {
-    const fetchJobsList = async () => {
-        await props.handleFetchJobs();
-    }
+  const [pageCount, setPageCount] = useState(0);
 
-    useEffect(() => {
-        fetchJobsList();
-    }, []);
+  const fetchJobsList = async () => {
+    await props.handleFetchJobs({ pageCount }).then(() => setPageCount((prev) => prev + 1));
+  };
 
-    const JobCards = props.jobs.map((job) => (
-        <Grid item xs={12} sm={8} md={6} lg={4} xl={3}>
-            <Box component="div" sx={{ p: 2, border: '1px dashed grey' }}>
-                <JobCard job={job} />
-            </Box>
+  useEffect(() => {
+    fetchJobsList();
+  }, []);
+
+  const JobCards = props.jobs.map((job) => (
+    <Grid key={job.jdUid} item xs={12} sm={8} md={6} lg={4} xl={3}>
+      <Box component="div">
+        <JobCard job={job} />
+      </Box>
+    </Grid>
+  ));
+
+  return (
+    <Box component="section" height={'100%'}>
+      <InfiniteScroll
+        dataLength={props.jobs?.length}
+        next={fetchJobsList}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <Grid container spacing={2}>
+          {JobCards}
         </Grid>
-    ));
-
-    return (
-        <Box component="section" height={'100%'} sx={{ p: 2, border: '1px dashed grey' }}>
-            <Grid container spacing={2}>
-                {JobCards}
-            </Grid>
-        </Box>
-    );
-}
+      </InfiniteScroll>
+    </Box>
+  );
+};
 
 const mapStateToProps = (state) => ({
-    jobs: state.jobs,
+  jobs: getJobs(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    increment: () => dispatch(increment),
-    decrement: () => dispatch(decrement),
-    handleFetchJobs: () => dispatch(fetchJobs()),
+  increment: () => dispatch(increment),
+  decrement: () => dispatch(decrement),
+  handleFetchJobs: (body) => dispatch(fetchJobs(body)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
