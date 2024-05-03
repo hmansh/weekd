@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import JobCard from './job-card';
-import { decrement, fetchJobs, increment } from '../../action';
+import { fetchJobs } from '../../action';
 import { getJobs } from '../../selector/jobs';
 
 function JobsList(props) {
@@ -29,17 +29,12 @@ function JobsList(props) {
 	return (
 		<Box component="section" height="100%">
 			<InfiniteScroll
-				dataLength={props.jobs.length}
-				next={fetchJobsList}
 				hasMore
+				next={fetchJobsList}
 				loader={<h4>Loading...</h4>}
-				endMessage={
-					<p style={{ textAlign: 'center' }}>
-						<b>Yay! You have seen it all</b>
-					</p>
-				}
+				dataLength={props.jobs.length}
 			>
-				<Grid container spacing={2}>
+				<Grid container sx={{ padding: 1 }} spacing={2}>
 					{JobCards}
 				</Grid>
 			</InfiniteScroll>
@@ -47,13 +42,11 @@ function JobsList(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
-	jobs: getJobs(state),
+const mapStateToProps = (state, props) => ({
+	jobs: getJobs(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	increment: () => dispatch(increment),
-	decrement: () => dispatch(decrement),
 	handleFetchJobs: (body) => dispatch(fetchJobs(body)),
 });
 

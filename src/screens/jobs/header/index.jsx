@@ -25,20 +25,27 @@ function Headers(props) {
 	const parsedQueryParams = queryString.parse(props.location.search);
 
 	const handleUpdateFilters = (key, value) => {
-		const updatedQueryParams = { ...parsedQueryParams, [key]: value };
-		const stringifyQueryParams = queryString.stringify(updatedQueryParams);
+		const previousQueryParams = { ...parsedQueryParams };
+		delete previousQueryParams[key];
 
-		props.history.push(`/jobs?${stringifyQueryParams}`);
+		const stringifyQueryParams = queryString.stringify({
+			...previousQueryParams,
+			[key]: value,
+		});
+		props.history.push(`?${stringifyQueryParams}`);
 	};
 
 	return (
-		<Card style={{ columnGap: 8 }} sx={{ padding: 1 }} elevation={0}>
-			<FormControl>
+		<Card
+			style={{ marginBottom: 24, columnGap: 8, rowGap: 8, display: 'flex', flexWrap: 'wrap' }}
+			sx={{ padding: 1 }}
+			elevation={0}
+		>
+			<FormControl sx={{ minWidth: 180 }}>
 				<InputLabel id="minimum-experience">Experience</InputLabel>
 				<Select
 					label="Experience"
 					id="minimum-experience"
-					sx={{ marginRight: 2 }}
 					value={parsedQueryParams.experience}
 					labelId="minimum-experience"
 					onChange={(event) => handleUpdateFilters('experience', event.target.value)}
@@ -51,10 +58,9 @@ function Headers(props) {
 				</Select>
 			</FormControl>
 
-			<FormControl>
+			<FormControl sx={{ minWidth: 180 }}>
 				<InputLabel id="location">Location</InputLabel>
 				<Select
-					sx={{ marginRight: 2 }}
 					labelId="location"
 					id="location"
 					value={parsedQueryParams.location}
@@ -68,10 +74,10 @@ function Headers(props) {
 					))}
 				</Select>
 			</FormControl>
-			<FormControl>
+
+			<FormControl sx={{ minWidth: 180 }}>
 				<InputLabel id="remote-job">Remote Job</InputLabel>
 				<Select
-					sx={{ marginRight: 2 }}
 					labelId="remote-job"
 					id="remote-job"
 					value={parsedQueryParams.isRemote}
@@ -85,10 +91,10 @@ function Headers(props) {
 					))}
 				</Select>
 			</FormControl>
-			<FormControl>
+
+			<FormControl sx={{ minWidth: 180 }}>
 				<InputLabel id="tech-stack">Tech Stack</InputLabel>
 				<Select
-					sx={{ marginRight: 2 }}
 					labelId="tech-stack"
 					id="tech-stack"
 					value={parsedQueryParams.techStack}
@@ -103,10 +109,9 @@ function Headers(props) {
 				</Select>
 			</FormControl>
 
-			<FormControl>
+			<FormControl sx={{ minWidth: 180 }}>
 				<InputLabel id="role">Role</InputLabel>
 				<Select
-					sx={{ marginRight: 2 }}
 					labelId="role"
 					id="role"
 					value={parsedQueryParams.role}
@@ -121,9 +126,8 @@ function Headers(props) {
 				</Select>
 			</FormControl>
 
-			<FormControl>
+			<FormControl sx={{ minWidth: 180 }}>
 				<TextField
-					sx={{ marginRight: 2 }}
 					id="outlined-basic"
 					label="Minimum Base Salary"
 					variant="outlined"
@@ -131,7 +135,8 @@ function Headers(props) {
 					onChange={(event) => handleUpdateFilters('minimumSalary', event.target.value)}
 				/>
 			</FormControl>
-			<FormControl>
+
+			<FormControl sx={{ minWidth: 180 }}>
 				<Autocomplete
 					freeSolo
 					id="company-search"

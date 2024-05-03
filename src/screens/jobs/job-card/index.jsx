@@ -1,83 +1,88 @@
 import React, { useState } from 'react';
-import { Typography, Card, CardContent, Grid, Button, Stack } from '@mui/material';
-import { capitalize, openLinkInNewTab } from '../../../helpers/utils';
+import { Typography, CardContent, Grid, Stack, Chip } from '@mui/material';
+import Box from '@mui/material/Box';
+import BoltIcon from '@mui/icons-material/Bolt';
+import { openLinkInNewTab } from '../../../helpers/utils';
+import {
+	StyledCard,
+	StyledDescription,
+	StyledPrimaryButton,
+	StyledSecondaryButton,
+} from './job-card';
 
 function JobCard({ job }) {
-	const [saved, setSaved] = useState(false);
 	const {
 		jdUid,
 		jdLink,
-		jobDetailsFromCompany,
+		minExp,
+		logoUrl,
+		jobRole,
+		location,
+		companyName,
 		maxJdSalary,
 		minJdSalary,
-		location,
-		minExp,
-		jobRole,
-		companyName,
-		logoUrl,
+		jobDetailsFromCompany,
 	} = job;
 
+	const [saved, setSaved] = useState(false);
+
+	const CardHeader = (
+		<Grid container>
+			<Grid item xs={3}>
+				<img src={logoUrl} alt="company-logo" style={{ height: 80, width: 80 }} />
+			</Grid>
+			<Grid item xs={6}>
+				<Typography variant="h5" gutterBottom>
+					{companyName}
+				</Typography>
+				<Typography variant="h8" color="textPrimary">
+					{jobRole.toUpperCase()}
+				</Typography>
+				<Typography variant="body2" color="textSecondary">
+					{location.toUpperCase()}
+				</Typography>
+			</Grid>
+		</Grid>
+	);
+
+	const MinimumExperience = minExp && (
+		<Typography variant="body2" gutterBottom>
+			<b>Minimum Experience: </b>
+			{minExp} years
+		</Typography>
+	);
+
 	return (
-		<Card key={jdUid} elevation={1} sx={{ maxWidth: 700 }}>
+		<StyledCard key={jdUid} elevation={1} sx={{ maxWidth: 700 }}>
 			<CardContent>
-				<Grid container>
-					<Grid item xs={4}>
-						<Grid item>
-							<img
-								style={{ height: 80, width: 80, borderRadius: 8 }}
-								src={logoUrl}
-								alt="company logo"
-							/>
-						</Grid>
-						<Typography variant="body2" color="textSecondary">
-							Posted: 6 days ago
-						</Typography>
-					</Grid>
-					<Grid item xs={6}>
-						<Typography variant="body2" gutterBottom>
-							{companyName}
-						</Typography>
-						<Typography variant="body2" color="textSecondary">
-							{capitalize(jobRole)}
-						</Typography>
-						<Typography variant="body2" color="textSecondary">
-							{capitalize(location)}
-						</Typography>
-					</Grid>
-				</Grid>
+				<Chip variant="primary" sx={{ mb: 2 }} icon={<BoltIcon />} label="Posted: 6 days ago" />
+				{CardHeader}
 				<Typography variant="body2" gutterBottom>
 					Estimated Salary: {minJdSalary} - {maxJdSalary} LPA
 				</Typography>
-				<Typography variant="body1" gutterBottom>
-					<b>About Company:</b>
-				</Typography>
-				<Typography variant="body2">{jobDetailsFromCompany}</Typography>
-				<Typography variant="body1" gutterBottom>
-					<b>Minimum Experience</b>
-				</Typography>
-				<Typography variant="body2">{minExp} years</Typography>
+				<Box maxHeight={200} overflow="hidden" position="relative">
+					<Typography variant="body1" gutterBottom>
+						<b>About Company: </b>
+					</Typography>
+					<StyledDescription gutterBottom variant="body2">
+						{jobDetailsFromCompany}
+					</StyledDescription>
+				</Box>
+				{MinimumExperience}
 				<Stack direction="column" spacing={1}>
-					<Button
-						onClick={() => openLinkInNewTab(jdLink)}
-						disableElevation
-						fullWidth
-						variant="contained"
-						color="primary"
-					>
+					<StyledPrimaryButton fullWidth disableElevation onClick={() => openLinkInNewTab(jdLink)}>
 						Apply
-					</Button>
-					<Button
-						onClick={() => setSaved((prev) => !prev)}
-						disableElevation
+					</StyledPrimaryButton>
+					<StyledSecondaryButton
 						fullWidth
-						variant="contained"
-						color="secondary"
+						disableElevation
+						onClick={() => setSaved((prev) => !prev)}
 					>
 						{saved ? 'Saved' : 'Save'}
-					</Button>
+					</StyledSecondaryButton>
 				</Stack>
 			</CardContent>
-		</Card>
+		</StyledCard>
 	);
 }
 

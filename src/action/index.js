@@ -1,8 +1,5 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const increment = createAction('INCREMENT');
-const decrement = createAction('DECREMENT');
 
 const fetchJobs = createAsyncThunk('FETCH_JOBS', async ({ pageCount }) => {
 	const headers = {
@@ -23,4 +20,4 @@ const fetchJobs = createAsyncThunk('FETCH_JOBS', async ({ pageCount }) => {
 	return data;
 });
 
-export { increment, decrement, fetchJobs };
+export { fetchJobs };
