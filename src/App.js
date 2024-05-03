@@ -1,24 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import JobsList from "./screens/jobs";
+import React from "react";
+import Box from "@mui/material/Box";
+import Header from "./screens/jobs/header";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Box component="section" height={'100vh'} sx={{ p: 2, border: '1px dashed grey' }}>
+          <Header />
+          <JobsList />
+      </Box>
   );
 }
 
